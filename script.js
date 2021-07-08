@@ -45,7 +45,7 @@ watchTutorialCallback((message) => {
 */
 
 function watchTutorialPromise() {
-    let p = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         if(userLeft) {
             reject({
                 name: 'User Left',
@@ -62,11 +62,38 @@ function watchTutorialPromise() {
             resolve('Thumbs up and subscribe');
         }
     });
-    p.then((message) => {
-        console.log(message);
-    }).catch((message) => {
-        console.log(message.name + ' ' + message.message);
-    });
 }
 
-watchTutorialPromise();
+watchTutorialPromise().then((message) => {
+    console.log(message);
+}).catch((error) => {
+    console.log(error.name + ' ' + error.message);
+});;
+
+const recordVideoOne = new Promise((resolve, reject) => {
+    resolve('Video 1 Recorded');
+});
+const recordVideoTwo = new Promise((resolve, reject) => {
+    resolve('Video 2 Recorded');
+});
+const recordVideoThree = new Promise((resolve, reject) => {
+    resolve('Video 3 Recorded');
+});
+
+// vraca sve vrednosti resolve i reject u jednom nizu
+Promise.all([
+    recordVideoOne,
+    recordVideoTwo,
+    recordVideoThree
+]).then((messages) => {
+    console.log(messages);
+});
+
+// vraca vrednost onog koji se prvi izvrsi
+Promise.race([
+    recordVideoOne,
+    recordVideoTwo,
+    recordVideoThree
+]).then((messages) => {
+    console.log(messages);
+});
